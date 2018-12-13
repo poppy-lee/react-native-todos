@@ -100,7 +100,7 @@ export default class TodoList extends React.Component<PropsType, StateType> {
       this.scrollHeight = height;
     };
     const setScrollTop = event => {
-      this.scrollTop = event.nativeEvent.contentOffset.y;
+      this.scrollTop = Math.max(0, event.nativeEvent.contentOffset.y);
     };
 
     return (
@@ -110,7 +110,7 @@ export default class TodoList extends React.Component<PropsType, StateType> {
           style={{ flex: 1 }}
           contentContainerStyle={{ flexGrow: 1 }}
           stickyHeaderIndices={[1]}
-          scrollEventThrottle={1}
+          scrollEventThrottle={16}
           onContentSizeChange={setScrollHeight}
           onScroll={setScrollTop}
         >
@@ -248,10 +248,12 @@ export default class TodoList extends React.Component<PropsType, StateType> {
     const todoListInputHeight = 50;
     const keyboardHeight = event.endCoordinates.height - this.offsetBottom;
     const enoughScrollHeight =
-      this.height - keyboardHeight - todoListInputHeight <
+      this.height - keyboardHeight - todoListInputHeight + 5 <
       this.scrollHeight - this.scrollTop;
     if (enoughScrollHeight) {
-      this.todoListScroll.scrollTo({ y: this.scrollTop - keyboardHeight });
+      this.todoListScroll.scrollTo({
+        y: Math.max(0, this.scrollTop - keyboardHeight)
+      });
     }
     Animated.timing(this.state.animHeight, {
       toValue: this.height,
