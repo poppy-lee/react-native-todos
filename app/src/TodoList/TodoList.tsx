@@ -4,6 +4,7 @@ import {
   LayoutRectangle,
   Dimensions,
   Keyboard,
+  Platform,
   Animated,
   ScrollView,
   View,
@@ -30,17 +31,22 @@ interface StateType {
 }
 
 export default class TodoList extends React.Component<PropsType, StateType> {
+  public keyboardWillShow: EmitterSubscription;
+  public keyboardWillHide: EmitterSubscription;
+  public todoListScroll: ScrollView;
+  public scrollHeight = 0;
+  public scrollTop = 0;
+
+  public prevProps = null;
   public state = {
     animHeight: new Animated.Value(this.height),
     filter: "ALL",
     todos: this.props.todos
   };
 
-  public keyboardWillShow: EmitterSubscription;
-  public keyboardWillHide: EmitterSubscription;
-  public todoListScroll: ScrollView;
-  public scrollHeight = 0;
-  public scrollTop = 0;
+  public get prevHeight() {
+    return this.prevProps.layout.height;
+  }
 
   public get screenHeight() {
     return Dimensions.get("window").height;
@@ -67,22 +73,13 @@ export default class TodoList extends React.Component<PropsType, StateType> {
   }
 
   public componentDidMount() {
-    this.keyboardWillShow = Keyboard.addListener(
-      "keyboardWillShow",
-      this.handleKeyboardWillShow
-    );
-    this.keyboardWillHide = Keyboard.addListener(
-      "keyboardWillHide",
-      this.handleKeyboardWillHide
-    );
+    this.handleKeyboardEventsIOS();
   }
 
   public componentDidUpdate(prevProps, prevState) {
+    this.prevProps = prevProps;
     if (prevProps.layout !== this.props.layout) {
-      Animated.timing(this.state.animHeight, {
-        toValue: this.height,
-        duration: 125
-      }).start();
+      this.handleLayoutDidUpdate();
     }
     if (prevState.todos !== this.state.todos) {
       this.props.storeTodos(this.state.todos);
@@ -147,40 +144,6 @@ export default class TodoList extends React.Component<PropsType, StateType> {
     );
   };
 
-  private handleKeyboardWillShow = event => {
-    const todoListInputHeight = 50;
-    const keyboardHeight = event.endCoordinates.height - this.offsetBottom;
-    const enoughScrollHeight =
-      this.height - todoListInputHeight < this.scrollHeight;
-    let listenerId = null;
-    if (enoughScrollHeight) {
-      this.todoListScroll.scrollTo({ y: this.scrollTop + keyboardHeight });
-    }
-    Animated.timing(this.state.animHeight, {
-      toValue: this.height - keyboardHeight,
-      duration: event.duration
-    }).start(() => this.state.animHeight.removeListener(listenerId));
-    listenerId = this.state.animHeight.addListener(() => {
-      if (!enoughScrollHeight) {
-        this.todoListScroll.scrollToEnd({ animated: false });
-      }
-    });
-  };
-
-  private handleKeyboardWillHide = event => {
-    const todoListInputHeight = 50;
-    const keyboardHeight = event.endCoordinates.height - this.offsetBottom;
-    const enoughScrollHeight =
-      this.height - todoListInputHeight < this.scrollHeight - this.scrollTop;
-    if (enoughScrollHeight) {
-      this.todoListScroll.scrollTo({ y: this.scrollTop - keyboardHeight });
-    }
-    Animated.timing(this.state.animHeight, {
-      toValue: this.height,
-      duration: event.duration - 50
-    }).start();
-  };
-
   private setFilter = (filter: string) => {
     this.setState({ filter });
   };
@@ -229,6 +192,71 @@ export default class TodoList extends React.Component<PropsType, StateType> {
         ]
       });
     }
+  };
+
+  private handleLayoutDidUpdate = () => {
+    let listenerId = this.handleLayoutDidUpdateAndroid();
+    Animated.timing(this.state.animHeight, {
+      toValue: this.height,
+      duration: 125
+    }).start(() => this.state.animHeight.removeListener(listenerId));
+  };
+  private handleLayoutDidUpdateAndroid = () => {
+    let listenerId = null;
+    if (Platform.OS === "android") {
+      const heightDiff = this.prevHeight - this.height;
+      const nextScrollTop = this.scrollTop + heightDiff;
+      listenerId = this.state.animHeight.addListener(() => {
+        this.todoListScroll.scrollTo({ animated: false, y: nextScrollTop });
+      });
+    }
+    return listenerId;
+  };
+
+  private handleKeyboardEventsIOS = () => {
+    if (Platform.OS === "ios") {
+      this.keyboardWillShow = Keyboard.addListener(
+        "keyboardWillShow",
+        this.handleKeyboardWillShowIOS
+      );
+      this.keyboardWillHide = Keyboard.addListener(
+        "keyboardWillHide",
+        this.handleKeyboardWillHideIOS
+      );
+    }
+  };
+  private handleKeyboardWillShowIOS = event => {
+    const todoListInputHeight = 50;
+    const keyboardHeight = event.endCoordinates.height - this.offsetBottom;
+    const enoughScrollHeight =
+      this.height - todoListInputHeight < this.scrollHeight;
+    let listenerId = null;
+    if (enoughScrollHeight) {
+      this.todoListScroll.scrollTo({ y: this.scrollTop + keyboardHeight });
+    }
+    Animated.timing(this.state.animHeight, {
+      toValue: this.height - keyboardHeight,
+      duration: event.duration
+    }).start(() => this.state.animHeight.removeListener(listenerId));
+    listenerId = this.state.animHeight.addListener(() => {
+      if (!enoughScrollHeight) {
+        this.todoListScroll.scrollToEnd({ animated: false });
+      }
+    });
+  };
+  private handleKeyboardWillHideIOS = event => {
+    const todoListInputHeight = 50;
+    const keyboardHeight = event.endCoordinates.height - this.offsetBottom;
+    const enoughScrollHeight =
+      this.height - keyboardHeight - todoListInputHeight <
+      this.scrollHeight - this.scrollTop;
+    if (enoughScrollHeight) {
+      this.todoListScroll.scrollTo({ y: this.scrollTop - keyboardHeight });
+    }
+    Animated.timing(this.state.animHeight, {
+      toValue: this.height,
+      duration: event.duration - 50
+    }).start();
   };
 }
 
