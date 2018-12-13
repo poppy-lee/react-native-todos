@@ -1,0 +1,23 @@
+{
+  "defaultSeverity": "warning",
+  "linterOptions": {
+    "exclude": ["node_modules/", "dist/"]
+  },
+  "extends": ["tslint-react"],
+  "rules": {
+    "interface-name": false,
+    "arrow-parens": false,
+    "jsx-no-lambda": false,
+    "jsx-no-multiline-js": false,
+    "semicolon": [true, "always", "ignore-bound-class-methods"],
+    "trailing-comma": false
+  },
+  "jsRules": {
+    "arrow-parens": false,
+    "jsx-no-lambda": false,
+    "jsx-no-multiline-js": false,
+    "no-submodule-imports": false,
+    "semicolon": [true, "always", "ignore-bound-class-methods"],
+    "trailing-comma": false
+  }
+}
