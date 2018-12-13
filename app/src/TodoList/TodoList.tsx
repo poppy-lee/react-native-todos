@@ -81,7 +81,7 @@ export default class TodoList extends React.Component<PropsType, StateType> {
     if (prevProps.layout !== this.props.layout) {
       Animated.timing(this.state.animHeight, {
         toValue: this.height,
-        duration: 250
+        duration: 125
       }).start();
     }
     if (prevState.todos !== this.state.todos) {
