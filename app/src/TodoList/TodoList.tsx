@@ -237,11 +237,14 @@ export default class TodoList extends React.Component<PropsType, StateType> {
       duration: event.duration
     }).start(() => this.state.animHeight.removeListener(listenerId));
     listenerId = this.state.animHeight.addListener(({ value }) => {
-      const maxScrollTop = this.scrollHeight - (value - todoListInputHeight);
-      this.todoListScroll.scrollTo({
-        animated: false,
-        y: Math.min(maxScrollTop, scrollTop + (this.height - value))
-      });
+      if (this.height - todoListInputHeight < this.scrollHeight) {
+        this.todoListScroll.scrollTo({
+          animated: false,
+          y: scrollTop + (this.height - value)
+        });
+      } else {
+        this.todoListScroll.scrollToEnd({ animated: false });
+      }
     });
   };
   private handleKeyboardWillHideIOS = event => {
@@ -255,7 +258,7 @@ export default class TodoList extends React.Component<PropsType, StateType> {
     listenerId = this.state.animHeight.addListener(({ value }) => {
       this.todoListScroll.scrollTo({
         animated: false,
-        y: scrollTop - (keyboardHeight - (this.height - value))
+        y: Math.max(0, scrollTop - (keyboardHeight - (this.height - value)))
       });
     });
   };
