@@ -112,6 +112,8 @@ export default class TodoList extends React.Component<PropsType, StateType> {
           stickyHeaderIndices={[1]}
           scrollEventThrottle={16}
           onContentSizeChange={setScrollHeight}
+          onMomentumScrollEnd={setScrollTop}
+          onScrollEndDrag={setScrollTop}
           onScroll={setScrollTop}
         >
           <TodoTitle />
@@ -228,37 +230,34 @@ export default class TodoList extends React.Component<PropsType, StateType> {
   private handleKeyboardWillShowIOS = event => {
     const todoListInputHeight = 50;
     const keyboardHeight = event.endCoordinates.height - this.offsetBottom;
-    const enoughScrollHeight =
-      this.height - todoListInputHeight < this.scrollHeight;
+    const scrollTop = this.scrollTop;
     let listenerId = null;
-    if (enoughScrollHeight) {
-      this.todoListScroll.scrollTo({ y: this.scrollTop + keyboardHeight });
-    }
     Animated.timing(this.state.animHeight, {
       toValue: this.height - keyboardHeight,
       duration: event.duration
     }).start(() => this.state.animHeight.removeListener(listenerId));
-    listenerId = this.state.animHeight.addListener(() => {
-      if (!enoughScrollHeight) {
-        this.todoListScroll.scrollToEnd({ animated: false });
-      }
+    listenerId = this.state.animHeight.addListener(({ value }) => {
+      const maxScrollTop = this.scrollHeight - (value - todoListInputHeight);
+      this.todoListScroll.scrollTo({
+        animated: false,
+        y: Math.min(maxScrollTop, scrollTop + (this.height - value))
+      });
     });
   };
   private handleKeyboardWillHideIOS = event => {
-    const todoListInputHeight = 50;
     const keyboardHeight = event.endCoordinates.height - this.offsetBottom;
-    const enoughScrollHeight =
-      this.height - keyboardHeight - todoListInputHeight + 5 <
-      this.scrollHeight - this.scrollTop;
-    if (enoughScrollHeight) {
-      this.todoListScroll.scrollTo({
-        y: Math.max(0, this.scrollTop - keyboardHeight)
-      });
-    }
+    const scrollTop = this.scrollTop;
+    let listenerId = null;
     Animated.timing(this.state.animHeight, {
       toValue: this.height,
       duration: event.duration - 50
-    }).start();
+    }).start(() => this.state.animHeight.removeListener(listenerId));
+    listenerId = this.state.animHeight.addListener(({ value }) => {
+      this.todoListScroll.scrollTo({
+        animated: false,
+        y: scrollTop - (keyboardHeight - (this.height - value))
+      });
+    });
   };
 }
 
