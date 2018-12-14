@@ -48,9 +48,6 @@ export default class TodoList extends React.Component<PropsType, StateType> {
     return this.prevProps.layout.height;
   }
 
-  public get screenHeight() {
-    return Dimensions.get("window").height;
-  }
   public get height() {
     return this.props.layout.height;
   }
@@ -58,7 +55,7 @@ export default class TodoList extends React.Component<PropsType, StateType> {
     return this.props.layout.y;
   }
   public get offsetBottom() {
-    return this.screenHeight - this.offsetTop - this.height;
+    return Dimensions.get("window").height - this.offsetTop - this.height;
   }
 
   public get visibleTodos() {
@@ -220,26 +217,23 @@ export default class TodoList extends React.Component<PropsType, StateType> {
   private handleLayoutDidUpdate = () => {
     switch (Platform.OS) {
       case "android":
-        {
-          let listenerId = null;
-          const heightDiff = this.prevHeight - this.height;
-          const nextScrollTop = this.scrollTop + heightDiff;
-          listenerId = this.handleLayoutDidUpdateAndroid(nextScrollTop);
-          Animated.timing(this.state.animHeight, {
-            toValue: this.height,
-            duration: 125
-          }).start(() => {
-            this.scrollTo(nextScrollTop, true);
-            this.state.animHeight.removeListener(listenerId);
-          });
-        }
-        break;
+        return this.handleLayoutDidUpdateAndroid();
       default:
         this.setState({ animHeight: new Animated.Value(this.height) });
     }
   };
-  private handleLayoutDidUpdateAndroid = nextScrollTop => {
-    return this.state.animHeight.addListener(() => {
+  private handleLayoutDidUpdateAndroid = () => {
+    let listenerId = null;
+    const heightDiff = this.prevHeight - this.height;
+    const nextScrollTop = this.scrollTop + heightDiff;
+    Animated.timing(this.state.animHeight, {
+      toValue: this.height,
+      duration: 125
+    }).start(() => {
+      this.scrollTo(nextScrollTop, true);
+      this.state.animHeight.removeListener(listenerId);
+    });
+    listenerId = this.state.animHeight.addListener(() => {
       this.scrollTo(nextScrollTop, false);
     });
   };
