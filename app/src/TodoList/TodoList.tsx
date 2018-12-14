@@ -104,7 +104,12 @@ export default class TodoList extends React.Component<PropsType, StateType> {
     };
 
     return (
-      <Animated.View style={{ height: animHeight }}>
+      <Animated.View
+        style={[
+          Platform.OS === "android" && { height: animHeight },
+          Platform.OS === "ios" && { flex: 1, maxHeight: animHeight }
+        ]}
+      >
         <ScrollView
           ref={node => (this.todoListScroll = node)}
           style={{ flex: 1 }}
@@ -146,6 +151,22 @@ export default class TodoList extends React.Component<PropsType, StateType> {
     );
   };
 
+  private scrollTo = (scrollTop: number, animated: boolean) => {
+    setTimeout(() => {
+      if (this.todoListScroll && this.todoListScroll.scrollTo) {
+        this.todoListScroll.scrollTo({ animated, y: scrollTop });
+      }
+    });
+  };
+
+  private scrollToEnd = (animated: boolean) => {
+    setTimeout(() => {
+      if (this.todoListScroll && this.todoListScroll.scrollToEnd) {
+        this.todoListScroll.scrollToEnd({ animated });
+      }
+    });
+  };
+
   private setFilter = (filter: string) => {
     this.setState({ filter });
   };
@@ -173,7 +194,7 @@ export default class TodoList extends React.Component<PropsType, StateType> {
     if (title) {
       const id = +new Date();
       this.setState({ todos: [...todos, { id, complete: false, title }] });
-      setTimeout(this.todoListScroll.scrollToEnd);
+      this.scrollToEnd(true);
     }
   };
 
@@ -197,22 +218,30 @@ export default class TodoList extends React.Component<PropsType, StateType> {
   };
 
   private handleLayoutDidUpdate = () => {
-    let listenerId = this.handleLayoutDidUpdateAndroid();
-    Animated.timing(this.state.animHeight, {
-      toValue: this.height,
-      duration: 125
-    }).start(() => this.state.animHeight.removeListener(listenerId));
-  };
-  private handleLayoutDidUpdateAndroid = () => {
-    let listenerId = null;
-    if (Platform.OS === "android") {
-      const heightDiff = this.prevHeight - this.height;
-      const nextScrollTop = this.scrollTop + heightDiff;
-      listenerId = this.state.animHeight.addListener(() => {
-        this.todoListScroll.scrollTo({ animated: false, y: nextScrollTop });
-      });
+    switch (Platform.OS) {
+      case "android":
+        {
+          let listenerId = null;
+          const heightDiff = this.prevHeight - this.height;
+          const nextScrollTop = this.scrollTop + heightDiff;
+          listenerId = this.handleLayoutDidUpdateAndroid(nextScrollTop);
+          Animated.timing(this.state.animHeight, {
+            toValue: this.height,
+            duration: 125
+          }).start(() => {
+            this.scrollTo(nextScrollTop, true);
+            this.state.animHeight.removeListener(listenerId);
+          });
+        }
+        break;
+      default:
+        this.setState({ animHeight: new Animated.Value(this.height) });
     }
-    return listenerId;
+  };
+  private handleLayoutDidUpdateAndroid = nextScrollTop => {
+    return this.state.animHeight.addListener(() => {
+      this.scrollTo(nextScrollTop, false);
+    });
   };
 
   private handleKeyboardEventsIOS = () => {
@@ -238,12 +267,9 @@ export default class TodoList extends React.Component<PropsType, StateType> {
     }).start(() => this.state.animHeight.removeListener(listenerId));
     listenerId = this.state.animHeight.addListener(({ value }) => {
       if (this.height - todoListInputHeight < this.scrollHeight) {
-        this.todoListScroll.scrollTo({
-          animated: false,
-          y: scrollTop + (this.height - value)
-        });
+        this.scrollTo(scrollTop + (this.height - value), false);
       } else {
-        this.todoListScroll.scrollToEnd({ animated: false });
+        this.scrollToEnd(false);
       }
     });
   };
@@ -256,10 +282,10 @@ export default class TodoList extends React.Component<PropsType, StateType> {
       duration: event.duration - 50
     }).start(() => this.state.animHeight.removeListener(listenerId));
     listenerId = this.state.animHeight.addListener(({ value }) => {
-      this.todoListScroll.scrollTo({
-        animated: false,
-        y: Math.max(0, scrollTop - (keyboardHeight - (this.height - value)))
-      });
+      this.scrollTo(
+        Math.max(0, scrollTop - (keyboardHeight - (this.height - value))),
+        false
+      );
     });
   };
 }
