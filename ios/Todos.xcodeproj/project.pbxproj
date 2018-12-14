@@ -5,6 +5,7 @@
 	};
 	objectVersion = 46;
 	objects = {
+
 /* Begin PBXBuildFile section */
 		00C302E51ABCBA2D00DB3ED1 /* libRCTActionSheet.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 00C302AC1ABCB8CE00DB3ED1 /* libRCTActionSheet.a */; };
 		00C302E71ABCBA2D00DB3ED1 /* libRCTGeolocation.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 00C302BA1ABCB90400DB3ED1 /* libRCTGeolocation.a */; };
@@ -12,6 +13,8 @@
 		00C302E91ABCBA2D00DB3ED1 /* libRCTNetwork.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 00C302DC1ABCB9D200DB3ED1 /* libRCTNetwork.a */; };
 		00C302EA1ABCBA2D00DB3ED1 /* libRCTVibration.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 00C302E41ABCB9EE00DB3ED1 /* libRCTVibration.a */; };
 		00E356F31AD99517003FC87E /* TodosTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* TodosTests.m */; };
+		0881C61F13044BE6B23F5F3E /* NotoSansKR-Black.otf in Resources */ = {isa = PBXBuildFile; fileRef = 38353FA1C8E9460AA59B7984 /* NotoSansKR-Black.otf */; };
+		0B4F9EC7978142C784974021 /* NotoSansKR-DemiLight.otf in Resources */ = {isa = PBXBuildFile; fileRef = B66EFEF386E44920821B5D7D /* NotoSansKR-DemiLight.otf */; };
 		11D1A2F320CAFA9E000508D9 /* libRCTAnimation.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5E9157331DD0AC6500FF2AA8 /* libRCTAnimation.a */; };
 		133E29F31AD74F7200F7D852 /* libRCTLinking.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 78C398B91ACF4ADC00677621 /* libRCTLinking.a */; };
 		139105C61AF99C1200B5F7CC /* libRCTSettings.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 139105C11AF99BAD00B5F7CC /* libRCTSettings.a */; };
@@ -22,7 +25,6 @@
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
 		140ED2AC1D01E1AD002B40FF /* libReact.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 146834041AC3E56700842450 /* libReact.a */; };
 		146834051AC3E58100842450 /* libReact.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 146834041AC3E56700842450 /* libReact.a */; };
-		1563E5811134464ABE212098 /* libRNSVG.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3776A9916672482FB5582B8A /* libRNSVG.a */; };
 		2D02E4BC1E0B4A80006451C7 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.m */; };
 		2D02E4BD1E0B4A84006451C7 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		2D02E4BF1E0B4AB3006451C7 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
@@ -36,16 +38,15 @@
 		2D16E6881FA4F8E400B85C8A /* libReact.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2D16E6891FA4F8E400B85C8A /* libReact.a */; };
 		2DCD954D1E0B4F2C00145EB5 /* TodosTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* TodosTests.m */; };
 		2DF0FFEE2056DD460020B375 /* libReact.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3DAD3EA31DF850E9000B6D8A /* libReact.a */; };
-		3A241265309D49E4B31222E8 /* NotoSansKR-DemiLight.otf in Resources */ = {isa = PBXBuildFile; fileRef = 9DF6094745014FEEB5143D0B /* NotoSansKR-DemiLight.otf */; };
-		57FD565692FB489991C63476 /* NotoSansKR-Light.otf in Resources */ = {isa = PBXBuildFile; fileRef = 62225712EA1A4E1EA4F1EA15 /* NotoSansKR-Light.otf */; };
-		65D02F3573D84281B0D7DDFE /* NotoSansKR-Black.otf in Resources */ = {isa = PBXBuildFile; fileRef = 92F340B09CC049B8A4546DD6 /* NotoSansKR-Black.otf */; };
-		7B2B938684CC40878D8DB14B /* NotoSansKR-Thin.otf in Resources */ = {isa = PBXBuildFile; fileRef = BABEA28E333A487F8E016900 /* NotoSansKR-Thin.otf */; };
+		3E59CE4CE7944E1D81DDE788 /* libRNSVG-tvOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = EE52AFE8774A463C84ACB403 /* libRNSVG-tvOS.a */; };
+		59B7B063311741E1B07CE6A9 /* NotoSansKR-Thin.otf in Resources */ = {isa = PBXBuildFile; fileRef = C6ABD29731AF4F11972919AB /* NotoSansKR-Thin.otf */; };
 		832341BD1AAA6AB300B99B32 /* libRCTText.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 832341B51AAA6A8300B99B32 /* libRCTText.a */; };
-		897275A541804E1CA630836E /* NotoSansKR-Bold.otf in Resources */ = {isa = PBXBuildFile; fileRef = 6DC75354E32C4CCCBD14B0BE /* NotoSansKR-Bold.otf */; };
-		93C95F6EF3BE492F9017AE42 /* NotoSansKR-Regular.otf in Resources */ = {isa = PBXBuildFile; fileRef = F5CC2992F54C4C37A2FCB14C /* NotoSansKR-Regular.otf */; };
+		A6F346E99A924236A46E473A /* NotoSansKR-Bold.otf in Resources */ = {isa = PBXBuildFile; fileRef = D67B344871B4409D913D021C /* NotoSansKR-Bold.otf */; };
+		A785539E3E0F4E2889A67F25 /* NotoSansKR-Light.otf in Resources */ = {isa = PBXBuildFile; fileRef = B86B4B87C6FA4860B3167E79 /* NotoSansKR-Light.otf */; };
 		ADBDB9381DFEBF1600ED6528 /* libRCTBlob.a in Frameworks */ = {isa = PBXBuildFile; fileRef = ADBDB9271DFEBF0700ED6528 /* libRCTBlob.a */; };
-		BA638D4016C040F8B088BA4C /* NotoSansKR-Medium.otf in Resources */ = {isa = PBXBuildFile; fileRef = 32E89DF1E9164577974F6AF7 /* NotoSansKR-Medium.otf */; };
-		D1EEBA7B25F9446888D2E0B5 /* libRNSVG-tvOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = CE764F1470F4447B875FC4CD /* libRNSVG-tvOS.a */; };
+		F0A47CFD96FA4580B96BD752 /* libRNSVG.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4213F248D589401D8F6360E2 /* libRNSVG.a */; };
+		F19D4EF98837458ABAE82A67 /* NotoSansKR-Medium.otf in Resources */ = {isa = PBXBuildFile; fileRef = EF3C188E74F94DD78BC91D11 /* NotoSansKR-Medium.otf */; };
+		FDBEA74CB2FB43A2B363D528 /* NotoSansKR-Regular.otf in Resources */ = {isa = PBXBuildFile; fileRef = C45C44052BA942D58AED9BA5 /* NotoSansKR-Regular.otf */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -196,16 +197,16 @@
 			remoteGlobalIDString = 9936F32F1F5F2E5B0010BF04;
 			remoteInfo = "privatedata-tvOS";
 		};
-		393EB71121BFB63300BFDA96 /* PBXContainerItemProxy */ = {
+		39E8792121C337D000DD2287 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
-			containerPortal = C099E21339A843EC8BC57353 /* RNSVG.xcodeproj */;
+			containerPortal = F0229D415B6F43658E3A5885 /* RNSVG.xcodeproj */;
 			proxyType = 2;
 			remoteGlobalIDString = 0CF68AC11AF0540F00FF9E5C;
 			remoteInfo = RNSVG;
 		};
-		393EB71321BFB63300BFDA96 /* PBXContainerItemProxy */ = {
+		39E8792321C337D000DD2287 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
-			containerPortal = C099E21339A843EC8BC57353 /* RNSVG.xcodeproj */;
+			containerPortal = F0229D415B6F43658E3A5885 /* RNSVG.xcodeproj */;
 			proxyType = 2;
 			remoteGlobalIDString = 94DDAC5C1F3D024300EED511;
 			remoteInfo = "RNSVG-tvOS";
@@ -361,20 +362,20 @@
 		2D02E47B1E0B4A5D006451C7 /* Todos-tvOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Todos-tvOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		2D02E4901E0B4A5D006451C7 /* Todos-tvOSTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Todos-tvOSTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		2D16E6891FA4F8E400B85C8A /* libReact.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libReact.a; sourceTree = BUILT_PRODUCTS_DIR; };
-		32E89DF1E9164577974F6AF7 /* NotoSansKR-Medium.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "NotoSansKR-Medium.otf"; path = "../assets/fonts/NotoSansKR-Medium.otf"; sourceTree = "<group>"; };
-		3776A9916672482FB5582B8A /* libRNSVG.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRNSVG.a; sourceTree = "<group>"; };
+		38353FA1C8E9460AA59B7984 /* NotoSansKR-Black.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "NotoSansKR-Black.otf"; path = "../assets/fonts/NotoSansKR-Black.otf"; sourceTree = "<group>"; };
+		4213F248D589401D8F6360E2 /* libRNSVG.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRNSVG.a; sourceTree = "<group>"; };
 		5E91572D1DD0AC6500FF2AA8 /* RCTAnimation.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTAnimation.xcodeproj; path = "../node_modules/react-native/Libraries/NativeAnimation/RCTAnimation.xcodeproj"; sourceTree = "<group>"; };
-		62225712EA1A4E1EA4F1EA15 /* NotoSansKR-Light.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "NotoSansKR-Light.otf"; path = "../assets/fonts/NotoSansKR-Light.otf"; sourceTree = "<group>"; };
-		6DC75354E32C4CCCBD14B0BE /* NotoSansKR-Bold.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "NotoSansKR-Bold.otf"; path = "../assets/fonts/NotoSansKR-Bold.otf"; sourceTree = "<group>"; };
 		78C398B01ACF4ADC00677621 /* RCTLinking.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTLinking.xcodeproj; path = "../node_modules/react-native/Libraries/LinkingIOS/RCTLinking.xcodeproj"; sourceTree = "<group>"; };
 		832341B01AAA6A8300B99B32 /* RCTText.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTText.xcodeproj; path = "../node_modules/react-native/Libraries/Text/RCTText.xcodeproj"; sourceTree = "<group>"; };
-		92F340B09CC049B8A4546DD6 /* NotoSansKR-Black.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "NotoSansKR-Black.otf"; path = "../assets/fonts/NotoSansKR-Black.otf"; sourceTree = "<group>"; };
-		9DF6094745014FEEB5143D0B /* NotoSansKR-DemiLight.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "NotoSansKR-DemiLight.otf"; path = "../assets/fonts/NotoSansKR-DemiLight.otf"; sourceTree = "<group>"; };
 		ADBDB91F1DFEBF0600ED6528 /* RCTBlob.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTBlob.xcodeproj; path = "../node_modules/react-native/Libraries/Blob/RCTBlob.xcodeproj"; sourceTree = "<group>"; };
-		BABEA28E333A487F8E016900 /* NotoSansKR-Thin.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "NotoSansKR-Thin.otf"; path = "../assets/fonts/NotoSansKR-Thin.otf"; sourceTree = "<group>"; };
-		C099E21339A843EC8BC57353 /* RNSVG.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RNSVG.xcodeproj; path = "../node_modules/react-native-svg/ios/RNSVG.xcodeproj"; sourceTree = "<group>"; };
-		CE764F1470F4447B875FC4CD /* libRNSVG-tvOS.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = "libRNSVG-tvOS.a"; sourceTree = "<group>"; };
-		F5CC2992F54C4C37A2FCB14C /* NotoSansKR-Regular.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "NotoSansKR-Regular.otf"; path = "../assets/fonts/NotoSansKR-Regular.otf"; sourceTree = "<group>"; };
+		B66EFEF386E44920821B5D7D /* NotoSansKR-DemiLight.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "NotoSansKR-DemiLight.otf"; path = "../assets/fonts/NotoSansKR-DemiLight.otf"; sourceTree = "<group>"; };
+		B86B4B87C6FA4860B3167E79 /* NotoSansKR-Light.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "NotoSansKR-Light.otf"; path = "../assets/fonts/NotoSansKR-Light.otf"; sourceTree = "<group>"; };
+		C45C44052BA942D58AED9BA5 /* NotoSansKR-Regular.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "NotoSansKR-Regular.otf"; path = "../assets/fonts/NotoSansKR-Regular.otf"; sourceTree = "<group>"; };
+		C6ABD29731AF4F11972919AB /* NotoSansKR-Thin.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "NotoSansKR-Thin.otf"; path = "../assets/fonts/NotoSansKR-Thin.otf"; sourceTree = "<group>"; };
+		D67B344871B4409D913D021C /* NotoSansKR-Bold.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "NotoSansKR-Bold.otf"; path = "../assets/fonts/NotoSansKR-Bold.otf"; sourceTree = "<group>"; };
+		EE52AFE8774A463C84ACB403 /* libRNSVG-tvOS.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = "libRNSVG-tvOS.a"; sourceTree = "<group>"; };
+		EF3C188E74F94DD78BC91D11 /* NotoSansKR-Medium.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "NotoSansKR-Medium.otf"; path = "../assets/fonts/NotoSansKR-Medium.otf"; sourceTree = "<group>"; };
+		F0229D415B6F43658E3A5885 /* RNSVG.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RNSVG.xcodeproj; path = "../node_modules/react-native-svg/ios/RNSVG.xcodeproj"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -402,7 +403,7 @@
 				832341BD1AAA6AB300B99B32 /* libRCTText.a in Frameworks */,
 				00C302EA1ABCBA2D00DB3ED1 /* libRCTVibration.a in Frameworks */,
 				139FDEF61B0652A700C62182 /* libRCTWebSocket.a in Frameworks */,
-				1563E5811134464ABE212098 /* libRNSVG.a in Frameworks */,
+				F0A47CFD96FA4580B96BD752 /* libRNSVG.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -418,7 +419,7 @@
 				2D02E4C61E0B4AEC006451C7 /* libRCTSettings-tvOS.a in Frameworks */,
 				2D02E4C71E0B4AEC006451C7 /* libRCTText-tvOS.a in Frameworks */,
 				2D02E4C81E0B4AEC006451C7 /* libRCTWebSocket-tvOS.a in Frameworks */,
-				D1EEBA7B25F9446888D2E0B5 /* libRNSVG-tvOS.a in Frameworks */,
+				3E59CE4CE7944E1D81DDE788 /* libRNSVG-tvOS.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -557,22 +558,36 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
-		393EB6E721BFB62F00BFDA96 /* Recovered References */ = {
+		39E878F721C337CB00DD2287 /* Recovered References */ = {
 			isa = PBXGroup;
 			children = (
-				3776A9916672482FB5582B8A /* libRNSVG.a */,
-				CE764F1470F4447B875FC4CD /* libRNSVG-tvOS.a */,
+				4213F248D589401D8F6360E2 /* libRNSVG.a */,
+				EE52AFE8774A463C84ACB403 /* libRNSVG-tvOS.a */,
 			);
 			name = "Recovered References";
 			sourceTree = "<group>";
 		};
-		393EB70D21BFB63200BFDA96 /* Products */ = {
+		39E8791D21C337D000DD2287 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				393EB71221BFB63300BFDA96 /* libRNSVG.a */,
-				393EB71421BFB63300BFDA96 /* libRNSVG-tvOS.a */,
+				39E8792221C337D000DD2287 /* libRNSVG.a */,
+				39E8792421C337D000DD2287 /* libRNSVG-tvOS.a */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		5C77D4DA631D472FB21B8FC2 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				38353FA1C8E9460AA59B7984 /* NotoSansKR-Black.otf */,
+				D67B344871B4409D913D021C /* NotoSansKR-Bold.otf */,
+				B66EFEF386E44920821B5D7D /* NotoSansKR-DemiLight.otf */,
+				B86B4B87C6FA4860B3167E79 /* NotoSansKR-Light.otf */,
+				EF3C188E74F94DD78BC91D11 /* NotoSansKR-Medium.otf */,
+				C45C44052BA942D58AED9BA5 /* NotoSansKR-Regular.otf */,
+				C6ABD29731AF4F11972919AB /* NotoSansKR-Thin.otf */,
+			);
+			name = Resources;
 			sourceTree = "<group>";
 		};
 		5E91572E1DD0AC6500FF2AA8 /* Products */ = {
@@ -608,7 +623,7 @@
 				832341B01AAA6A8300B99B32 /* RCTText.xcodeproj */,
 				00C302DF1ABCB9EE00DB3ED1 /* RCTVibration.xcodeproj */,
 				139FDEE61B06529A00C62182 /* RCTWebSocket.xcodeproj */,
-				C099E21339A843EC8BC57353 /* RNSVG.xcodeproj */,
+				F0229D415B6F43658E3A5885 /* RNSVG.xcodeproj */,
 			);
 			name = Libraries;
 			sourceTree = "<group>";
@@ -630,8 +645,8 @@
 				00E356EF1AD99517003FC87E /* TodosTests */,
 				83CBBA001A601CBA00E9B192 /* Products */,
 				2D16E6871FA4F8E400B85C8A /* Frameworks */,
-				393EB6E721BFB62F00BFDA96 /* Recovered References */,
-				D93942F7CBA541FFA9A34D63 /* Resources */,
+				5C77D4DA631D472FB21B8FC2 /* Resources */,
+				39E878F721C337CB00DD2287 /* Recovered References */,
 			);
 			indentWidth = 2;
 			sourceTree = "<group>";
@@ -656,20 +671,6 @@
 				2D16E6721FA4F8DC00B85C8A /* libRCTBlob-tvOS.a */,
 			);
 			name = Products;
-			sourceTree = "<group>";
-		};
-		D93942F7CBA541FFA9A34D63 /* Resources */ = {
-			isa = PBXGroup;
-			children = (
-				92F340B09CC049B8A4546DD6 /* NotoSansKR-Black.otf */,
-				6DC75354E32C4CCCBD14B0BE /* NotoSansKR-Bold.otf */,
-				9DF6094745014FEEB5143D0B /* NotoSansKR-DemiLight.otf */,
-				62225712EA1A4E1EA4F1EA15 /* NotoSansKR-Light.otf */,
-				32E89DF1E9164577974F6AF7 /* NotoSansKR-Medium.otf */,
-				F5CC2992F54C4C37A2FCB14C /* NotoSansKR-Regular.otf */,
-				BABEA28E333A487F8E016900 /* NotoSansKR-Thin.otf */,
-			);
-			name = Resources;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -835,8 +836,8 @@
 					ProjectRef = 146833FF1AC3E56700842450 /* React.xcodeproj */;
 				},
 				{
-					ProductGroup = 393EB70D21BFB63200BFDA96 /* Products */;
-					ProjectRef = C099E21339A843EC8BC57353 /* RNSVG.xcodeproj */;
+					ProductGroup = 39E8791D21C337D000DD2287 /* Products */;
+					ProjectRef = F0229D415B6F43658E3A5885 /* RNSVG.xcodeproj */;
 				},
 			);
 			projectRoot = "";
@@ -983,18 +984,18 @@
 			remoteRef = 2DF0FFEC2056DD460020B375 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		393EB71221BFB63300BFDA96 /* libRNSVG.a */ = {
+		39E8792221C337D000DD2287 /* libRNSVG.a */ = {
 			isa = PBXReferenceProxy;
 			fileType = archive.ar;
 			path = libRNSVG.a;
-			remoteRef = 393EB71121BFB63300BFDA96 /* PBXContainerItemProxy */;
+			remoteRef = 39E8792121C337D000DD2287 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		393EB71421BFB63300BFDA96 /* libRNSVG-tvOS.a */ = {
+		39E8792421C337D000DD2287 /* libRNSVG-tvOS.a */ = {
 			isa = PBXReferenceProxy;
 			fileType = archive.ar;
 			path = "libRNSVG-tvOS.a";
-			remoteRef = 393EB71321BFB63300BFDA96 /* PBXContainerItemProxy */;
+			remoteRef = 39E8792321C337D000DD2287 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 		3DAD3E841DF850E9000B6D8A /* libRCTImage-tvOS.a */ = {
@@ -1139,13 +1140,13 @@
 			files = (
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
 				13B07FBD1A68108700A75B9A /* LaunchScreen.xib in Resources */,
-				65D02F3573D84281B0D7DDFE /* NotoSansKR-Black.otf in Resources */,
-				897275A541804E1CA630836E /* NotoSansKR-Bold.otf in Resources */,
-				3A241265309D49E4B31222E8 /* NotoSansKR-DemiLight.otf in Resources */,
-				57FD565692FB489991C63476 /* NotoSansKR-Light.otf in Resources */,
-				BA638D4016C040F8B088BA4C /* NotoSansKR-Medium.otf in Resources */,
-				93C95F6EF3BE492F9017AE42 /* NotoSansKR-Regular.otf in Resources */,
-				7B2B938684CC40878D8DB14B /* NotoSansKR-Thin.otf in Resources */,
+				0881C61F13044BE6B23F5F3E /* NotoSansKR-Black.otf in Resources */,
+				A6F346E99A924236A46E473A /* NotoSansKR-Bold.otf in Resources */,
+				0B4F9EC7978142C784974021 /* NotoSansKR-DemiLight.otf in Resources */,
+				A785539E3E0F4E2889A67F25 /* NotoSansKR-Light.otf in Resources */,
+				F19D4EF98837458ABAE82A67 /* NotoSansKR-Medium.otf in Resources */,
+				FDBEA74CB2FB43A2B363D528 /* NotoSansKR-Regular.otf in Resources */,
+				59B7B063311741E1B07CE6A9 /* NotoSansKR-Thin.otf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
