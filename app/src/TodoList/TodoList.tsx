@@ -60,6 +60,10 @@ export default class TodoList extends React.Component<PropsType, StateType> {
     return Dimensions.get("window").height - this.offsetTop - this.height;
   }
 
+  public get inputHeight() {
+    return 50;
+  }
+
   public get visibleTodos() {
     const { filter, todos } = this.state;
     switch (filter) {
@@ -78,7 +82,7 @@ export default class TodoList extends React.Component<PropsType, StateType> {
   public componentDidUpdate(prevProps, prevState) {
     this.prevProps = prevProps;
     if (prevProps.layout !== this.props.layout) {
-      this.handleLayoutDidUpdate();
+      this.handleLayoutUpdate();
     }
     if (prevState.todos !== this.state.todos) {
       this.props.storeTodos(this.state.todos);
@@ -95,13 +99,6 @@ export default class TodoList extends React.Component<PropsType, StateType> {
     const complete = todos.length && todos.every(({ complete }) => complete);
     const activeCount = todos.filter(({ complete }) => !complete).length;
 
-    const setScrollHeight = (width, height) => {
-      this.scrollHeight = height;
-    };
-    const setScrollTop = event => {
-      this.scrollTop = Math.max(0, event.nativeEvent.contentOffset.y);
-    };
-
     return (
       <Animated.View
         style={[
@@ -115,10 +112,9 @@ export default class TodoList extends React.Component<PropsType, StateType> {
           contentContainerStyle={{ flexGrow: 1 }}
           stickyHeaderIndices={[1]}
           scrollEventThrottle={16}
-          onContentSizeChange={setScrollHeight}
-          onMomentumScrollEnd={setScrollTop}
-          onScrollEndDrag={setScrollTop}
-          onScroll={setScrollTop}
+          onMomentumScrollEnd={this.setScrollTop}
+          onScrollEndDrag={this.setScrollTop}
+          onScroll={this.setScrollTop}
         >
           <TodoTitle />
           <TodoListHeader
@@ -129,7 +125,7 @@ export default class TodoList extends React.Component<PropsType, StateType> {
             toggleTodos={this.toggleTodos}
             deleteCompleteTodos={this.deleteCompleteTodos}
           />
-          <View style={{ flex: 1 }}>
+          <View style={{ flex: 1 }} onLayout={this.handleVisibleTodosUpdate}>
             {this.visibleTodos.map(this.renderTodoListItem)}
             {!this.visibleTodos.length && <NoResult />}
           </View>
@@ -164,6 +160,10 @@ export default class TodoList extends React.Component<PropsType, StateType> {
         this.todoListScroll.scrollToEnd({ animated });
       }
     });
+  };
+
+  private setScrollTop = event => {
+    this.scrollTop = Math.max(0, event.nativeEvent.contentOffset.y);
   };
 
   private setFilter = (filter: string) => {
@@ -216,15 +216,15 @@ export default class TodoList extends React.Component<PropsType, StateType> {
     }
   };
 
-  private handleLayoutDidUpdate = () => {
+  private handleLayoutUpdate = () => {
     switch (Platform.OS) {
       case "android":
-        return this.handleLayoutDidUpdateAndroid();
+        return this.handleLayoutUpdateAndroid();
       default:
         this.setState({ animHeight: new Animated.Value(this.height) });
     }
   };
-  private handleLayoutDidUpdateAndroid = () => {
+  private handleLayoutUpdateAndroid = () => {
     let listenerId = null;
     const heightDiff = this.height - this.prevHeight;
     const nextScrollTop = this.scrollTop - heightDiff;
@@ -238,6 +238,18 @@ export default class TodoList extends React.Component<PropsType, StateType> {
     listenerId = this.state.animHeight.addListener(() => {
       this.scrollTo(nextScrollTop, false);
     });
+  };
+
+  private handleVisibleTodosUpdate = event => {
+    const layout = event.nativeEvent.layout;
+    const prevScrollHeight = this.scrollHeight;
+    const scrollHeight = layout.y + layout.height;
+    const overscroll =
+      scrollHeight - (this.height - this.inputHeight) < this.scrollTop;
+    if (scrollHeight < prevScrollHeight && overscroll) {
+      this.scrollToEnd(true);
+    }
+    this.scrollHeight = scrollHeight;
   };
 
   private handleKeyboardEventsIOS = () => {
@@ -254,7 +266,6 @@ export default class TodoList extends React.Component<PropsType, StateType> {
   };
   private handleKeyboardWillShowIOS = event => {
     if (this.keyboardShowingIOS) return;
-    const todoListInputHeight = 50;
     const keyboardHeight = event.endCoordinates.height - this.offsetBottom;
     const scrollTop = this.scrollTop;
     let listenerId = null;
@@ -264,11 +275,8 @@ export default class TodoList extends React.Component<PropsType, StateType> {
       duration: event.duration
     }).start(() => this.state.animHeight.removeListener(listenerId));
     listenerId = this.state.animHeight.addListener(({ value }) => {
-      if (this.height - todoListInputHeight < this.scrollHeight) {
-        this.scrollTo(scrollTop + (this.height - value), false);
-      } else {
-        this.scrollToEnd(false);
-      }
+      const heightDiff = this.height - value;
+      this.scrollTo(scrollTop + heightDiff, false);
     });
   };
   private handleKeyboardWillHideIOS = event => {
@@ -284,8 +292,11 @@ export default class TodoList extends React.Component<PropsType, StateType> {
       this.keyboardShowingIOS = false;
     });
     listenerId = this.state.animHeight.addListener(({ value }) => {
+      const heightDiff = this.height - value;
+      const nextScrollTop = scrollTop + heightDiff - keyboardHeight;
+      const maximumScrollTop = this.scrollHeight - (value - this.inputHeight);
       this.scrollTo(
-        Math.max(0, scrollTop - (keyboardHeight - (this.height - value))),
+        Math.min(Math.max(0, nextScrollTop), maximumScrollTop),
         false
       );
     });
