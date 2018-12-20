@@ -274,7 +274,7 @@ export default class TodoList extends React.Component<PropsType, StateType> {
     listenerId = this.state.animHeight.addListener(({ value }) => {
       const heightDiff = this.height - value;
       const nextScrollTop = scrollTop + heightDiff - keyboardHeight;
-      if (this.height - this.inputHeight < this.scrollHeight - nextScrollTop) {
+      if (this.height - this.inputHeight < this.scrollHeight) {
         this.scrollTo(nextScrollTop, false);
       } else {
         this.scrollToEnd(false);
