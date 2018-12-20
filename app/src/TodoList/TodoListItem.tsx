@@ -1,5 +1,5 @@
 import React from "react";
-import { View, Text } from "react-native";
+import { TouchableWithoutFeedback, View, Text } from "react-native";
 import SvgImage from "react-native-svg-uri";
 
 import { TodoType } from "app/types/TodoList";
@@ -15,9 +15,9 @@ export default class TodoListItem extends React.Component<PropsType> {
     const { title, complete } = this.props.todo;
     return (
       <TodoListItemWrapper>
-        <ToggleButton complete={complete} toggleTodo={this.toggleTodo} />
+        <ToggleButton complete={complete} onPress={this.toggleTodo} />
         <TodoListItemTitle complete={complete}>{title}</TodoListItemTitle>
-        <DeletButton deleteTodo={this.deleteTodo} />
+        <DeletButton onPress={this.deleteTodo} />
       </TodoListItemWrapper>
     );
   }
@@ -72,42 +72,42 @@ function TodoListItemTitle(props) {
   );
 }
 
-function ToggleButton({ complete, toggleTodo }) {
+function ToggleButton({ complete, onPress }) {
   return (
-    <View
-      style={{ justifyContent: "center", width: 54, paddingLeft: 4 }}
-      onTouchEnd={toggleTodo}
-    >
-      <SvgImage
-        width="40"
-        height="40"
-        svgXmlData={
-          complete
-            ? '<svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="-10 -18 100 135"><circle cx="50" cy="50" r="50" fill="none" stroke="#bddad5" stroke-width="3"/><path fill="#5dc2af" d="M72 25L42 71 27 56l-4 4 20 20 34-52z"/></svg>'
-            : '<svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="-10 -18 100 135"><circle cx="50" cy="50" r="50" fill="none" stroke="#ededed" stroke-width="3"/></svg>'
-        }
-      />
-    </View>
+    <TouchableWithoutFeedback onPress={onPress}>
+      <View style={{ justifyContent: "center", width: 54, paddingLeft: 4 }}>
+        <SvgImage
+          width="40"
+          height="40"
+          svgXmlData={
+            complete
+              ? '<svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="-10 -18 100 135"><circle cx="50" cy="50" r="50" fill="none" stroke="#bddad5" stroke-width="3"/><path fill="#5dc2af" d="M72 25L42 71 27 56l-4 4 20 20 34-52z"/></svg>'
+              : '<svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="-10 -18 100 135"><circle cx="50" cy="50" r="50" fill="none" stroke="#ededed" stroke-width="3"/></svg>'
+          }
+        />
+      </View>
+    </TouchableWithoutFeedback>
   );
 }
 
-function DeletButton({ deleteTodo }) {
+function DeletButton({ onPress }) {
   return (
-    <View
-      style={{ justifyContent: "center", width: 54, right: 0, padding: 10 }}
-      onTouchEnd={deleteTodo}
-    >
-      <Text
-        style={{
-          textAlign: "center",
-          lineHeight: 30,
-          fontFamily: "NotoSansKR-Thin",
-          fontSize: 24,
-          color: "#cc9a9a"
-        }}
+    <TouchableWithoutFeedback onPress={onPress}>
+      <View
+        style={{ justifyContent: "center", width: 54, right: 0, padding: 10 }}
       >
-        ×
-      </Text>
-    </View>
+        <Text
+          style={{
+            textAlign: "center",
+            lineHeight: 30,
+            fontFamily: "NotoSansKR-Thin",
+            fontSize: 24,
+            color: "#cc9a9a"
+          }}
+        >
+          ×
+        </Text>
+      </View>
+    </TouchableWithoutFeedback>
   );
 }
