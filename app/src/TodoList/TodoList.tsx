@@ -87,7 +87,6 @@ export default class TodoList extends React.Component<PropsType, StateType> {
     if (prevState.todos !== this.state.todos) {
       this.props.storeTodos(this.state.todos);
     }
-    this.scrollTo(this.scrollTop, true);
   }
 
   public componentWillUnmount() {
@@ -297,15 +296,12 @@ export default class TodoList extends React.Component<PropsType, StateType> {
       this.keyboardShowingIOS = false;
     });
     listenerId = this.state.animHeight.addListener(({ value }) => {
-      if (scrollTop < keyboardHeight) {
-        this.scrollTo(0, false);
+      const heightDiff = this.height - value;
+      const nextScrollTop = scrollTop + heightDiff - keyboardHeight;
+      if (this.height - this.inputHeight < this.scrollHeight - nextScrollTop) {
+        this.scrollTo(nextScrollTop, false);
       } else {
-        if (scrollTop < this.scrollHeight - (this.height - this.inputHeight)) {
-          const heightDiff = this.height - value;
-          this.scrollTo(scrollTop + heightDiff - keyboardHeight, false);
-        } else {
-          this.scrollToEnd(false);
-        }
+        this.scrollToEnd(false);
       }
     });
   };
