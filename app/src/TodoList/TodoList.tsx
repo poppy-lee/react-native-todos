@@ -2,6 +2,7 @@ import React from "react";
 import {
   EmitterSubscription,
   LayoutRectangle,
+  AsyncStorage,
   Dimensions,
   Keyboard,
   Platform,
@@ -11,6 +12,7 @@ import {
 
 import { TodoType } from "app/types/TodoList";
 
+import { todoListReducer } from "./reducer";
 import TodoTitle from "./TodoTitle";
 import TodoListHeader from "./TodoListHeader";
 import TodoListItems from "./TodoListItems";
@@ -18,8 +20,6 @@ import TodoListInput from "./TodoListInput";
 
 interface PropsType {
   layout: LayoutRectangle;
-  todos: TodoType[];
-  storeTodos: (todos: TodoType[]) => any;
 }
 
 interface StateType {
@@ -27,6 +27,14 @@ interface StateType {
   filter: string;
   todos: TodoType[];
 }
+
+const STORAGE_KEY = "todo-list";
+
+const initialState = {
+  animHeight: new Animated.Value(this.height),
+  filter: "ALL",
+  todos: []
+};
 
 export default class TodoList extends React.Component<PropsType, StateType> {
   public keyboardWillShowIOS: EmitterSubscription;
@@ -37,12 +45,9 @@ export default class TodoList extends React.Component<PropsType, StateType> {
   public scrollHeight = 0;
   public scrollTop = 0;
 
+  public loaded = false;
   public prevProps = null;
-  public state = {
-    animHeight: new Animated.Value(this.height),
-    filter: "ALL",
-    todos: this.props.todos
-  };
+  public state = todoListReducer<StateType>(initialState, null);
 
   public get prevHeight() {
     return this.prevProps.layout.height;
@@ -73,18 +78,29 @@ export default class TodoList extends React.Component<PropsType, StateType> {
     return todos;
   }
 
+  public dispatch = action => {
+    this.setState(todoListReducer(this.state, action));
+  };
+
   public componentDidMount() {
+    AsyncStorage.getItem(STORAGE_KEY)
+      .then(JSON.parse)
+      .then(state => {
+        this.loaded = true;
+        this.setState({
+          ...todoListReducer(state, null),
+          animHeight: new Animated.Value(this.height)
+        });
+      });
     this.handleKeyboardEventsIOS();
   }
 
   public componentDidUpdate(prevProps, prevState) {
-    this.prevProps = prevProps;
     if (prevProps.layout !== this.props.layout) {
       this.handleLayoutUpdate();
     }
-    if (prevState.todos !== this.state.todos) {
-      this.props.storeTodos(this.state.todos);
-    }
+    this.prevProps = prevProps;
+    AsyncStorage.setItem(STORAGE_KEY, JSON.stringify(this.state));
   }
 
   public componentWillUnmount() {
@@ -97,7 +113,7 @@ export default class TodoList extends React.Component<PropsType, StateType> {
     const complete = todos.length && todos.every(({ complete }) => complete);
     const activeCount = todos.filter(({ complete }) => !complete).length;
 
-    return (
+    return this.loaded ? (
       <Animated.View
         style={[
           Platform.OS === "android" && { height: animHeight },
@@ -132,7 +148,7 @@ export default class TodoList extends React.Component<PropsType, StateType> {
         </ScrollView>
         <TodoListInput createTodo={this.createTodo} />
       </Animated.View>
-    );
+    ) : null;
   }
 
   private scrollTo = (scrollTop: number, animated: boolean) => {
@@ -142,7 +158,6 @@ export default class TodoList extends React.Component<PropsType, StateType> {
       }
     });
   };
-
   private scrollToEnd = (animated: boolean) => {
     setTimeout(() => {
       if (this.todoListScroll && this.todoListScroll.scrollToEnd) {
@@ -154,55 +169,27 @@ export default class TodoList extends React.Component<PropsType, StateType> {
   private setScrollTop = event => {
     this.scrollTop = Math.max(0, event.nativeEvent.contentOffset.y);
   };
-
   private setFilter = (filter: string) => {
     this.setState({ filter });
   };
-
   private toggleTodos = () => {
-    const { todos } = this.state;
-    const allTodosComplete = todos.every(({ complete }) => complete);
-    this.setState({
-      todos: todos.map(todo => ({
-        ...todo,
-        complete: !allTodosComplete
-      }))
-    });
+    this.dispatch({ type: "toggleTodos" });
   };
-
   private deleteCompleteTodos = () => {
-    const { todos } = this.state;
-    this.setState({
-      todos: todos.filter(({ complete }) => !complete)
-    });
+    this.dispatch({ type: "deleteCompleteTodos" });
   };
-
   private createTodo = title => {
-    const { todos } = this.state;
-    if (title) {
-      const id = +new Date();
-      this.setState({ todos: [...todos, { id, complete: false, title }] });
-      this.scrollToEnd(true);
-    }
+    this.dispatch({ type: "createTodo", title });
+    this.scrollToEnd(true);
   };
-
   private deleteTodo = (todo: TodoType) => {
-    const { todos } = this.state;
-    this.setState({ todos: todos.filter(t => t.id !== todo.id) });
+    this.dispatch({ type: "deleteTodo", todo });
   };
-
   private updateTodo = (todo: TodoType, nextTodo) => {
-    const { todos } = this.state;
-    const todoIndex = todos.findIndex(t => t.id === todo.id);
-    if (0 <= todoIndex) {
-      this.setState({
-        todos: [
-          ...todos.slice(0, todoIndex),
-          { ...todo, ...nextTodo },
-          ...todos.slice(todoIndex + 1)
-        ]
-      });
-    }
+    this.dispatch({
+      type: "updateTodo",
+      todo: { ...todo, ...nextTodo }
+    });
   };
 
   private handleLayoutUpdate = () => {
