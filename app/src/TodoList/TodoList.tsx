@@ -247,7 +247,7 @@ export default class TodoList extends React.Component<PropsType, StateType> {
     const overscroll =
       scrollHeight - (this.height - this.inputHeight) < this.scrollTop;
     if (scrollHeight < prevScrollHeight && overscroll) {
-      this.scrollToEnd(true);
+      this.scrollToEnd(false);
     }
     this.scrollHeight = scrollHeight;
   };
