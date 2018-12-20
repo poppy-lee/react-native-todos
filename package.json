@@ -9,7 +9,7 @@
     "eject": "rm -rf android/ ios/; react-native eject",
     "link": "react-native link; react-native link react-native-svg; app-icon generate",
     "start": "react-native start",
-    "android": "react-native run-android",
+    "android": "emulator -avd $(emulator -list-avds | head -n 1) &>/dev/null & react-native run-android",
     "ios": "react-native run-ios",
     "xcode": "open ./ios/Todos.xcodeproj/"
   },
