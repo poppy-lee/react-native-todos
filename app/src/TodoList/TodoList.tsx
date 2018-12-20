@@ -87,6 +87,7 @@ export default class TodoList extends React.Component<PropsType, StateType> {
     if (prevState.todos !== this.state.todos) {
       this.props.storeTodos(this.state.todos);
     }
+    this.scrollTo(this.scrollTop, true);
   }
 
   public componentWillUnmount() {
@@ -275,8 +276,12 @@ export default class TodoList extends React.Component<PropsType, StateType> {
       duration: event.duration
     }).start(() => this.state.animHeight.removeListener(listenerId));
     listenerId = this.state.animHeight.addListener(({ value }) => {
-      const heightDiff = this.height - value;
-      this.scrollTo(scrollTop + heightDiff, false);
+      if (this.height - this.inputHeight < this.scrollHeight) {
+        const heightDiff = this.height - value;
+        this.scrollTo(scrollTop + heightDiff, false);
+      } else {
+        this.scrollToEnd(false);
+      }
     });
   };
   private handleKeyboardWillHideIOS = event => {
@@ -292,13 +297,16 @@ export default class TodoList extends React.Component<PropsType, StateType> {
       this.keyboardShowingIOS = false;
     });
     listenerId = this.state.animHeight.addListener(({ value }) => {
-      const heightDiff = this.height - value;
-      const nextScrollTop = scrollTop + heightDiff - keyboardHeight;
-      const maximumScrollTop = this.scrollHeight - (value - this.inputHeight);
-      this.scrollTo(
-        Math.min(Math.max(0, nextScrollTop), maximumScrollTop),
-        false
-      );
+      if (scrollTop < keyboardHeight) {
+        this.scrollTo(0, false);
+      } else {
+        if (scrollTop < this.scrollHeight - (this.height - this.inputHeight)) {
+          const heightDiff = this.height - value;
+          this.scrollTo(scrollTop + heightDiff - keyboardHeight, false);
+        } else {
+          this.scrollToEnd(false);
+        }
+      }
     });
   };
 }
