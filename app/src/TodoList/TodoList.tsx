@@ -6,16 +6,14 @@ import {
   Keyboard,
   Platform,
   Animated,
-  ScrollView,
-  View,
-  Text
+  ScrollView
 } from "react-native";
 
 import { TodoType } from "app/types/TodoList";
 
 import TodoTitle from "./TodoTitle";
 import TodoListHeader from "./TodoListHeader";
-import TodoListItem from "./TodoListItem";
+import TodoListItems from "./TodoListItems";
 import TodoListInput from "./TodoListInput";
 
 interface PropsType {
@@ -125,26 +123,17 @@ export default class TodoList extends React.Component<PropsType, StateType> {
             toggleTodos={this.toggleTodos}
             deleteCompleteTodos={this.deleteCompleteTodos}
           />
-          <View style={{ flex: 1 }} onLayout={this.handleVisibleTodosUpdate}>
-            {this.visibleTodos.map(this.renderTodoListItem)}
-            {!this.visibleTodos.length && <NoResult />}
-          </View>
+          <TodoListItems
+            visibleTodos={this.visibleTodos}
+            deleteTodo={this.deleteTodo}
+            updateTodo={this.updateTodo}
+            onLayout={this.handleVisibleTodosUpdate}
+          />
         </ScrollView>
         <TodoListInput createTodo={this.createTodo} />
       </Animated.View>
     );
   }
-
-  private renderTodoListItem = todo => {
-    return (
-      <TodoListItem
-        key={todo.id}
-        todo={todo}
-        deleteTodo={this.deleteTodo}
-        updateTodo={this.updateTodo}
-      />
-    );
-  };
 
   private scrollTo = (scrollTop: number, animated: boolean) => {
     setTimeout(() => {
@@ -305,21 +294,4 @@ export default class TodoList extends React.Component<PropsType, StateType> {
       }
     });
   };
-}
-
-function NoResult() {
-  return (
-    <View style={{ flex: 1, justifyContent: "center" }}>
-      <Text
-        style={{
-          textAlign: "center",
-          fontFamily: "NotoSansKR-Thin",
-          fontSize: 20,
-          color: "#aaa"
-        }}
-      >
-        no result
-      </Text>
-    </View>
-  );
 }
