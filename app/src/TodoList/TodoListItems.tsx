@@ -1,5 +1,5 @@
 import React from "react";
-import { LayoutChangeEvent, View, Text } from "react-native";
+import { View, Text } from "react-native";
 
 import { TodoType } from "app/types/TodoList";
 
@@ -9,13 +9,12 @@ interface PropsType {
   visibleTodos: TodoType[];
   deleteTodo: (todo: TodoType) => any;
   updateTodo: (todo: TodoType, nextTodo) => any;
-  onLayout: (event: LayoutChangeEvent) => any;
 }
 
 export default class TodoListItems extends React.Component<PropsType> {
   public render() {
     return (
-      <View style={{ flex: 1 }} onLayout={this.props.onLayout}>
+      <View style={{ flex: 1 }}>
         {this.props.visibleTodos.map(this.renderTodoListItem)}
         {!this.props.visibleTodos.length && <NoResult />}
       </View>

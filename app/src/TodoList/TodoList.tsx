@@ -95,9 +95,10 @@ export default class TodoList extends React.Component<PropsType, StateType> {
         <ScrollView
           ref={node => (this.scrollView = node)}
           style={{ flex: 1 }}
-          // contentContainerStyle={{ flexGrow: 1 }}
+          contentContainerStyle={{ flexGrow: 1 }}
           stickyHeaderIndices={[1]}
           scrollEventThrottle={16}
+          onContentSizeChange={this.handleContentSizeChange}
           onMomentumScrollEnd={this.handleScroll}
           onScrollEndDrag={this.handleScroll}
           onScroll={this.handleScroll}
@@ -113,7 +114,6 @@ export default class TodoList extends React.Component<PropsType, StateType> {
           />
           <TodoListItems
             visibleTodos={this.visibleTodos}
-            onLayout={this.handleLayoutScrollHeight}
             deleteTodo={this.props.deleteTodo}
             updateTodo={this.props.updateTodo}
           />
@@ -145,14 +145,14 @@ export default class TodoList extends React.Component<PropsType, StateType> {
   private handleScroll = event => {
     this.scrollTop = Math.max(0, event.nativeEvent.contentOffset.y);
   };
-  private handleLayoutScrollHeight = event => {
-    const layout = event.nativeEvent.layout;
+  private handleContentSizeChange = (scrollWidth, scrollHeight) => {
     const prevScrollHeight = this.scrollHeight;
-    const scrollHeight = layout.y + layout.height;
     const overscroll =
       scrollHeight - (this.height - this.inputHeight) < this.scrollTop;
     if (scrollHeight < prevScrollHeight && overscroll) {
-      this.scrollToEnd(false);
+      this.scrollToEnd(true);
+    } else {
+      this.scrollTo(this.scrollTop, true);
     }
     this.scrollHeight = scrollHeight;
   };
@@ -236,11 +236,7 @@ export default class TodoList extends React.Component<PropsType, StateType> {
     listenerId = this.state.animHeight.addListener(({ value }) => {
       const heightDiff = this.height - value;
       const nextScrollTop = scrollTop + heightDiff - keyboardHeight;
-      if (this.height - this.inputHeight < this.scrollHeight) {
-        this.scrollTo(nextScrollTop, false);
-      } else {
-        this.scrollToEnd(false);
-      }
+      this.scrollTo(Math.max(0, nextScrollTop), false);
     });
   };
 }
