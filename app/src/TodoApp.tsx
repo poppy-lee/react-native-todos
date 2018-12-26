@@ -13,17 +13,17 @@ interface StateType {
 }
 
 export default class TodoApp extends React.Component<any, StateType> {
-  public state = {
-    layout: null
-  };
+  public state = { layout: null };
+
+  public get ready() {
+    return this.state.layout;
+  }
 
   public render() {
-    const { layout } = this.state;
-
     return (
       <SafeAreaView style={{ flex: 1, backgroundColor: "white" }}>
         <View style={{ flex: 1 }} onLayout={this.handleLayout}>
-          {layout && <TodoList layout={layout} />}
+          {this.ready && <TodoList {...this.state} />}
         </View>
       </SafeAreaView>
     );
