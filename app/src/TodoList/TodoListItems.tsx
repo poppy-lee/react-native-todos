@@ -1,5 +1,5 @@
 import React from "react";
-import { View, Text } from "react-native";
+import { FlatList, View, Text } from "react-native";
 
 import { TodoType } from "app/types/TodoList";
 
@@ -14,14 +14,17 @@ interface PropsType {
 export default class TodoListItems extends React.Component<PropsType> {
   public render() {
     return (
-      <View style={{ flex: 1 }}>
-        {this.props.visibleTodos.map(this.renderTodoListItem)}
-        {!this.props.visibleTodos.length && <NoResult />}
-      </View>
+      <FlatList
+        data={this.props.visibleTodos}
+        contentContainerStyle={{ flexGrow: 1 }}
+        keyExtractor={({ id }) => `${id}`}
+        renderItem={this.renderTodoListItem}
+        ListEmptyComponent={NoResult}
+      />
     );
   }
 
-  private renderTodoListItem = todo => {
+  private renderTodoListItem = ({ item: todo }) => {
     return (
       <TodoListItem
         key={todo.id}
