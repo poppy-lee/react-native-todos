@@ -163,7 +163,7 @@ export default class TodoList extends React.Component<PropsType, StateType> {
     if (scrollHeight < prevScrollHeight && overscroll) {
       this.scrollToEnd(true);
     } else {
-      this.scrollTo(this.scrollTop, true);
+      Platform.OS === "ios" && this.scrollTo(this.scrollTop, true);
     }
     this.scrollHeight = scrollHeight;
   };
@@ -174,7 +174,8 @@ export default class TodoList extends React.Component<PropsType, StateType> {
   ) => {
     switch (Platform.OS) {
       case "android":
-        return this.handleLayoutUpdateAndroid(prevLayout, layout);
+        if (prevLayout)
+          return this.handleLayoutUpdateAndroid(prevLayout, layout);
       default:
         this.setState({ animHeight: new Animated.Value(layout.height) });
     }
@@ -216,7 +217,7 @@ export default class TodoList extends React.Component<PropsType, StateType> {
     this.keyboardShowing = true;
     Animated.timing(this.state.animHeight, {
       toValue: this.height - keyboardHeight,
-      duration: event.duration - 40
+      duration: event.duration
     }).start(() => this.state.animHeight.removeListener(listenerId));
     listenerId = this.state.animHeight.addListener(({ value }) => {
       if (this.height - this.inputHeight < this.scrollHeight) {
