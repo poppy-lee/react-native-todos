@@ -29,20 +29,14 @@ interface StateType {
 export default class TodoList extends React.Component<PropsType, StateType> {
   public keyboardShowing = false;
 
-  public todoListScroll: ScrollView;
+  public scrollView: ScrollView;
   public scrollHeight = 0;
   public scrollTop = 0;
-
-  public prevProps = null;
 
   public state = {
     animHeight: new Animated.Value(0),
     filter: "ALL"
   };
-
-  public get prevHeight() {
-    return this.prevProps.layout.height;
-  }
 
   public get height() {
     return this.props.layout.height;
@@ -72,13 +66,12 @@ export default class TodoList extends React.Component<PropsType, StateType> {
 
   public componentDidMount() {
     this.addKeyboardEventListeners();
-    this.handleLayoutUpdate();
+    this.handleLayoutUpdate(null, this.props.layout);
   }
 
   public componentDidUpdate(prevProps, prevState) {
-    this.prevProps = prevProps;
     if (prevProps.layout !== this.props.layout) {
-      this.handleLayoutUpdate();
+      this.handleLayoutUpdate(prevProps.layout, this.props.layout);
     }
   }
 
@@ -100,14 +93,14 @@ export default class TodoList extends React.Component<PropsType, StateType> {
         ]}
       >
         <ScrollView
-          ref={node => (this.todoListScroll = node)}
+          ref={node => (this.scrollView = node)}
           style={{ flex: 1 }}
-          contentContainerStyle={{ flexGrow: 1 }}
+          // contentContainerStyle={{ flexGrow: 1 }}
           stickyHeaderIndices={[1]}
           scrollEventThrottle={16}
-          onMomentumScrollEnd={this.setScrollTop}
-          onScrollEndDrag={this.setScrollTop}
-          onScroll={this.setScrollTop}
+          onMomentumScrollEnd={this.handleScroll}
+          onScrollEndDrag={this.handleScroll}
+          onScroll={this.handleScroll}
         >
           <TodoTitle />
           <TodoListHeader
@@ -120,7 +113,7 @@ export default class TodoList extends React.Component<PropsType, StateType> {
           />
           <TodoListItems
             visibleTodos={this.visibleTodos}
-            onLayout={this.handleVisibleTodosUpdate}
+            onLayout={this.handleLayoutScrollHeight}
             deleteTodo={this.props.deleteTodo}
             updateTodo={this.props.updateTodo}
           />
@@ -132,23 +125,36 @@ export default class TodoList extends React.Component<PropsType, StateType> {
 
   private scrollTo = (scrollTop: number, animated: boolean) => {
     setTimeout(() => {
-      if (this.todoListScroll && this.todoListScroll.scrollTo) {
-        this.todoListScroll.scrollTo({ animated, y: scrollTop });
+      if (this.scrollView && this.scrollView.scrollTo) {
+        this.scrollView.scrollTo({ animated, y: scrollTop });
       }
     });
   };
   private scrollToEnd = (animated: boolean) => {
     setTimeout(() => {
-      if (this.todoListScroll && this.todoListScroll.scrollToEnd) {
-        this.todoListScroll.scrollToEnd({ animated });
+      if (this.scrollView && this.scrollView.scrollToEnd) {
+        this.scrollView.scrollToEnd({ animated });
       }
     });
   };
-  private setScrollTop = event => {
-    this.scrollTop = Math.max(0, event.nativeEvent.contentOffset.y);
-  };
+
   private setFilter = (filter: string) => {
     this.setState({ filter });
+  };
+
+  private handleScroll = event => {
+    this.scrollTop = Math.max(0, event.nativeEvent.contentOffset.y);
+  };
+  private handleLayoutScrollHeight = event => {
+    const layout = event.nativeEvent.layout;
+    const prevScrollHeight = this.scrollHeight;
+    const scrollHeight = layout.y + layout.height;
+    const overscroll =
+      scrollHeight - (this.height - this.inputHeight) < this.scrollTop;
+    if (scrollHeight < prevScrollHeight && overscroll) {
+      this.scrollToEnd(false);
+    }
+    this.scrollHeight = scrollHeight;
   };
 
   private createTodo = (title: string) => {
@@ -156,17 +162,23 @@ export default class TodoList extends React.Component<PropsType, StateType> {
     this.scrollToEnd(true);
   };
 
-  private handleLayoutUpdate = () => {
+  private handleLayoutUpdate = (
+    prevLayout: LayoutRectangle,
+    layout: LayoutRectangle
+  ) => {
     switch (Platform.OS) {
       case "android":
-        return this.handleLayoutUpdateAndroid();
+        return this.handleLayoutUpdateAndroid(prevLayout, layout);
       default:
-        this.setState({ animHeight: new Animated.Value(this.height) });
+        this.setState({ animHeight: new Animated.Value(layout.height) });
     }
   };
-  private handleLayoutUpdateAndroid = () => {
+  private handleLayoutUpdateAndroid = (
+    prevLayout: LayoutRectangle,
+    layout: LayoutRectangle
+  ) => {
     let listenerId = null;
-    const heightDiff = this.height - this.prevHeight;
+    const heightDiff = layout.height - prevLayout.height;
     const nextScrollTop = this.scrollTop - heightDiff;
     Animated.timing(this.state.animHeight, {
       toValue: this.height,
@@ -178,18 +190,6 @@ export default class TodoList extends React.Component<PropsType, StateType> {
     listenerId = this.state.animHeight.addListener(() => {
       this.scrollTo(nextScrollTop, false);
     });
-  };
-
-  private handleVisibleTodosUpdate = event => {
-    const layout = event.nativeEvent.layout;
-    const prevScrollHeight = this.scrollHeight;
-    const scrollHeight = layout.y + layout.height;
-    const overscroll =
-      scrollHeight - (this.height - this.inputHeight) < this.scrollTop;
-    if (scrollHeight < prevScrollHeight && overscroll) {
-      this.scrollToEnd(false);
-    }
-    this.scrollHeight = scrollHeight;
   };
 
   private addKeyboardEventListeners = () => {
@@ -210,7 +210,7 @@ export default class TodoList extends React.Component<PropsType, StateType> {
     this.keyboardShowing = true;
     Animated.timing(this.state.animHeight, {
       toValue: this.height - keyboardHeight,
-      duration: event.duration
+      duration: event.duration - 40
     }).start(() => this.state.animHeight.removeListener(listenerId));
     listenerId = this.state.animHeight.addListener(({ value }) => {
       if (this.height - this.inputHeight < this.scrollHeight) {
@@ -228,7 +228,7 @@ export default class TodoList extends React.Component<PropsType, StateType> {
     let listenerId = null;
     Animated.timing(this.state.animHeight, {
       toValue: this.height,
-      duration: event.duration - 50
+      duration: event.duration - 40
     }).start(() => {
       this.state.animHeight.removeListener(listenerId);
       this.keyboardShowing = false;
