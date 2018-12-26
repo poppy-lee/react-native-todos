@@ -110,7 +110,7 @@ export default class TodoList extends React.Component<PropsType, StateType> {
             filter={filter}
             setFilter={this.setFilter}
             toggleTodos={this.props.toggleTodos}
-            deleteCompleteTodos={this.props.deleteCompleteTodos}
+            deleteCompleteTodos={this.deleteCompleteTodos}
           />
           <TodoListItems
             visibleTodos={this.visibleTodos}
@@ -122,6 +122,21 @@ export default class TodoList extends React.Component<PropsType, StateType> {
       </Animated.View>
     );
   }
+
+  private deleteCompleteTodos = () => {
+    this.props.deleteCompleteTodos();
+    this.scrollTo(this.scrollTop, true);
+  };
+
+  private createTodo = (title: string) => {
+    this.props.createTodo(title);
+    this.scrollToEnd(true);
+  };
+
+  private setFilter = (filter: string) => {
+    this.setState({ filter });
+    this.scrollTo(this.scrollTop, true);
+  };
 
   private scrollTo = (scrollTop: number, animated: boolean) => {
     setTimeout(() => {
@@ -138,10 +153,6 @@ export default class TodoList extends React.Component<PropsType, StateType> {
     });
   };
 
-  private setFilter = (filter: string) => {
-    this.setState({ filter });
-  };
-
   private handleScroll = event => {
     this.scrollTop = Math.max(0, event.nativeEvent.contentOffset.y);
   };
@@ -155,11 +166,6 @@ export default class TodoList extends React.Component<PropsType, StateType> {
       this.scrollTo(this.scrollTop, true);
     }
     this.scrollHeight = scrollHeight;
-  };
-
-  private createTodo = (title: string) => {
-    this.props.createTodo(title);
-    this.scrollToEnd(true);
   };
 
   private handleLayoutUpdate = (
