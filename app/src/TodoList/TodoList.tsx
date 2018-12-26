@@ -1,6 +1,5 @@
 import React from "react";
 import {
-  EmitterSubscription,
   LayoutRectangle,
   Dimensions,
   Keyboard,
@@ -34,7 +33,6 @@ export default class TodoList extends React.Component<PropsType, StateType> {
   public scrollHeight = 0;
   public scrollTop = 0;
 
-  public loaded = false;
   public prevProps = null;
 
   public state = {
